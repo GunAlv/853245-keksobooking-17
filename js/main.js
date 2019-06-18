@@ -9,10 +9,36 @@ var PIN_HEIGHT = 70;
 var map = document.querySelector('.map');
 var mapPins = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+var adFormFieldsets = document.querySelectorAll('.ad-form fieldset');
+var mapFilterFieldsets = document.querySelectorAll('.map__filters fieldset');
+var mapFilterSelects = document.querySelectorAll('.map__filters select');
+var pinMain = document.querySelector('.map__pin--main');
+var adForm = document.querySelector('.ad-form');
+var addressInput = document.querySelector('#address');
 
 var removeClass = function (elem, elemClass) {
   elem.classList.remove(elemClass);
 };
+
+
+// Функции переключения состояния форм
+
+var toggleAttributeDisabled = function (elem, isDisabled) {
+  for (var i = 0; i < elem.length; i++) {
+    elem[i].disabled = isDisabled;
+  }
+};
+
+var toggleDisablingForm = function (isDisable) {
+  toggleAttributeDisabled(adFormFieldsets, isDisable);
+  toggleAttributeDisabled(mapFilterFieldsets, isDisable);
+  toggleAttributeDisabled(mapFilterSelects, isDisable);
+};
+
+toggleDisablingForm(true);
+
+
+// Функции рендера меток
 
 var getRandomNumber = function (min, max) { // Получить случайное число
   return Math.floor(Math.random() * (max - min)) + min;
@@ -43,7 +69,6 @@ var generatePins = function (count) { // Создать массив объек�
   return pins;
 };
 
-
 var renderPin = function (pin) { // Отрисовать метку
   var pinElement = pinTemplate.cloneNode(true);
   pinElement.style.left = pin.location.x + 'px';
@@ -68,6 +93,28 @@ var addPinsToDOM = function (pins) { // Добавить в разметку м�
   mapPins.appendChild(createFragment(pins));
 };
 
+var getPinMainLocation = function () { // Получить координаты главной метки
+  var pinMainPositionX = pinMain.offsetLeft;
+  var pinMainPositionY = pinMain.offsetTop;
+  addressInput.value = pinMainPositionX + ', ' + pinMainPositionY;
+};
 
-addPinsToDOM(generatePins(PINS_QUANTITY));
-removeClass(map, 'map--faded');
+getPinMainLocation();
+
+
+// Функции активации страницы
+
+var makePageActive = function () {
+  addPinsToDOM(generatePins(PINS_QUANTITY));
+  removeClass(map, 'map--faded');
+  removeClass(adForm, 'ad-form--disabled');
+  toggleDisablingForm(false);
+};
+
+pinMain.addEventListener('click', function () {
+  makePageActive();
+});
+
+pinMain.addEventListener('mouseup', function () {
+  getPinMainLocation();
+});
