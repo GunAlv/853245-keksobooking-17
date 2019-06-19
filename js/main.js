@@ -16,26 +16,26 @@ var pinMain = document.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
 var addressInput = document.querySelector('#address');
 
-var removeClass = function (elem, elemClass) {
-  elem.classList.remove(elemClass);
+var removeClass = function (element, elemClass) {
+  element.classList.remove(elemClass);
 };
 
 
 // Функции переключения состояния форм
 
-var toggleAttributeDisabled = function (elem, isDisabled) {
-  for (var i = 0; i < elem.length; i++) {
-    elem[i].disabled = isDisabled;
+var changeAttributeDisabled = function (element, isDisabled) {
+  for (var i = 0; i < element.length; i++) {
+    element[i].disabled = isDisabled;
   }
 };
 
-var toggleDisablingForm = function (isDisable) {
-  toggleAttributeDisabled(adFormFieldsets, isDisable);
-  toggleAttributeDisabled(mapFilterFieldsets, isDisable);
-  toggleAttributeDisabled(mapFilterSelects, isDisable);
+var changeDisablingForm = function (isDisable) {
+  changeAttributeDisabled(adFormFieldsets, isDisable);
+  changeAttributeDisabled(mapFilterFieldsets, isDisable);
+  changeAttributeDisabled(mapFilterSelects, isDisable);
 };
 
-toggleDisablingForm(true);
+changeDisablingForm(true);
 
 
 // Функции рендера меток
@@ -108,7 +108,7 @@ var makePageActive = function () {
   addPinsToDOM(generatePins(PINS_QUANTITY));
   removeClass(map, 'map--faded');
   removeClass(adForm, 'ad-form--disabled');
-  toggleDisablingForm(false);
+  changeDisablingForm(false);
 };
 
 pinMain.addEventListener('click', function () {
