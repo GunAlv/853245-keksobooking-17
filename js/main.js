@@ -6,36 +6,42 @@ var Y_MIN = 130;
 var Y_MAX = 630;
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
+var MAIN_PIN_WIDTH = 65;
+var MAIN_PIN_HEIGHT = 65;
+var FORM_OFF = true;
+var FORM_ON = false;
 var map = document.querySelector('.map');
 var mapPins = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-var adFormFieldsets = document.querySelectorAll('.ad-form fieldset');
-var mapFilterFieldsets = document.querySelectorAll('.map__filters fieldset');
-var mapFilterSelects = document.querySelectorAll('.map__filters select');
-var pinMain = document.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
-var addressInput = document.querySelector('#address');
+var pinMain = document.querySelector('.map__pin--main');
+var selectType = adForm.querySelector('#type');
+var selectTimein = adForm.querySelector('#timein');
+var selectTimeout = adForm.querySelector('#timeout');
 
-var removeClass = function (element, elemClass) {
-  element.classList.remove(elemClass);
+var removeClass = function (element, elementClass) {
+  element.classList.remove(elementClass);
 };
 
 
 // Функции переключения состояния форм
 
-var changeAttributeDisabled = function (element, isDisabled) {
-  for (var i = 0; i < element.length; i++) {
-    element[i].disabled = isDisabled;
+var changeAttributeDisabled = function (elements, isDisabled) { // ***Изменить функцию
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].disabled = isDisabled;
   }
 };
 
 var changeDisablingForm = function (isDisable) {
+  var adFormFieldsets = adForm.querySelectorAll('.ad-form fieldset');
+  var mapFilterFieldsets = document.querySelectorAll('.map__filters fieldset');
+  var mapFilterSelects = document.querySelectorAll('.map__filters select');
   changeAttributeDisabled(adFormFieldsets, isDisable);
   changeAttributeDisabled(mapFilterFieldsets, isDisable);
   changeAttributeDisabled(mapFilterSelects, isDisable);
 };
 
-changeDisablingForm(true);
+changeDisablingForm(FORM_OFF);
 
 
 // Функции рендера меток
@@ -93,28 +99,78 @@ var addPinsToDOM = function (pins) { // Добавить в разметку м�
   mapPins.appendChild(createFragment(pins));
 };
 
-var getPinMainLocation = function () { // Получить координаты главной метки
+var getPinMainLocation = function (isActive) { // Получить координаты главной метки
+  var addressInput = document.querySelector('#address');
   var pinMainPositionX = pinMain.offsetLeft;
   var pinMainPositionY = pinMain.offsetTop;
-  addressInput.value = pinMainPositionX + ', ' + pinMainPositionY;
+  var result;
+
+  if (isActive) {
+    result = pinMainPositionX + ', ' + pinMainPositionY;
+  } else {
+    result = Math.floor(pinMainPositionX + (MAIN_PIN_WIDTH / 2)) + ', ' + (pinMainPositionY + MAIN_PIN_HEIGHT);
+  }
+
+  addressInput.value = result;
 };
 
-getPinMainLocation();
+getPinMainLocation(FORM_OFF);
 
 
 // Функции активации страницы
 
 var makePageActive = function () {
+  changeDisablingForm(FORM_ON);
   addPinsToDOM(generatePins(PINS_QUANTITY));
   removeClass(map, 'map--faded');
   removeClass(adForm, 'ad-form--disabled');
-  changeDisablingForm(false);
+  pinMain.removeEventListener('click', onPinMainClick); // Удаляем обработчик для предотвращения добавления новых меток
 };
 
-pinMain.addEventListener('click', function () {
+var onPinMainClick = function () {
   makePageActive();
+};
+
+pinMain.addEventListener('click', onPinMainClick);
+
+var onPinMainMouseup = function () {
+  getPinMainLocation(FORM_ON); // Вставляем координаты острого угла главной метки при активации страницы
+};
+
+pinMain.addEventListener('mouseup', onPinMainMouseup);
+
+
+// Функции валидации форм
+
+var getMinPrice = function (selectedOption) { // Изменить минимальную цену в зависимости от выбранного типа жилья
+  var price = document.querySelector('#price');
+  var propertyPrices = {
+    'bungalo': 0,
+    'flat': 1000,
+    'house': 5000,
+    'palace': 10000
+  };
+  var keys = Object.keys(propertyPrices);
+  for (var i = 0; i < keys.length; i++) {
+    if (selectedOption === keys[i]) {
+      price.min = propertyPrices[keys[i]];
+    }
+  }
+};
+
+selectType.addEventListener('change', function () {
+  var selectedOption = selectType[selectType.selectedIndex].value;
+  getMinPrice(selectedOption);
 });
 
-pinMain.addEventListener('mouseup', function () {
-  getPinMainLocation();
-});
+var onSelectTimeinChange = function () {
+  selectTimeout.value = selectTimein.value;
+};
+
+var onSelectTimeoutChange = function () {
+  selectTimein.value = selectTimeout.value;
+};
+
+selectTimein.addEventListener('change', onSelectTimeinChange);
+
+selectTimeout.addEventListener('change', onSelectTimeoutChange);
