@@ -13,12 +13,11 @@ var FORM_ON = false;
 var map = document.querySelector('.map');
 var mapPins = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-var adFormFieldsets = document.querySelectorAll('.ad-form fieldset');
-var mapFilterFieldsets = document.querySelectorAll('.map__filters fieldset');
-var mapFilterSelects = document.querySelectorAll('.map__filters select');
-var pinMain = document.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
-var addressInput = document.querySelector('#address');
+var pinMain = document.querySelector('.map__pin--main');
+var selectType = adForm.querySelector('#type');
+var selectTimein = adForm.querySelector('#timein');
+var selectTimeout = adForm.querySelector('#timeout');
 
 var removeClass = function (element, elementClass) {
   element.classList.remove(elementClass);
@@ -34,6 +33,9 @@ var changeAttributeDisabled = function (elements, isDisabled) { // ***Измен
 };
 
 var changeDisablingForm = function (isDisable) {
+  var adFormFieldsets = adForm.querySelectorAll('.ad-form fieldset');
+  var mapFilterFieldsets = document.querySelectorAll('.map__filters fieldset');
+  var mapFilterSelects = document.querySelectorAll('.map__filters select');
   changeAttributeDisabled(adFormFieldsets, isDisable);
   changeAttributeDisabled(mapFilterFieldsets, isDisable);
   changeAttributeDisabled(mapFilterSelects, isDisable);
@@ -98,6 +100,7 @@ var addPinsToDOM = function (pins) { // Добавить в разметку м�
 };
 
 var getPinMainLocation = function (isActive) { // Получить координаты главной метки
+  var addressInput = document.querySelector('#address');
   var pinMainPositionX = pinMain.offsetLeft;
   var pinMainPositionY = pinMain.offsetTop;
   var result;
@@ -136,3 +139,38 @@ var onPinMainMouseup = function () {
 
 pinMain.addEventListener('mouseup', onPinMainMouseup);
 
+
+// Функции валидации форм
+
+var getMinPrice = function (selectedOption) { // Изменить минимальную цену в зависимости от выбранного типа жилья
+  var price = document.querySelector('#price');
+  var propertyPrices = {
+    'bungalo': 0,
+    'flat': 1000,
+    'house': 5000,
+    'palace': 10000
+  };
+  var keys = Object.keys(propertyPrices);
+  for (var i = 0; i < keys.length; i++) {
+    if (selectedOption === keys[i]) {
+      price.min = propertyPrices[keys[i]];
+    }
+  }
+};
+
+selectType.addEventListener('change', function () {
+  var selectedOption = selectType[selectType.selectedIndex].value;
+  getMinPrice(selectedOption);
+});
+
+var onSelectTimeinChange = function () {
+  selectTimeout.value = selectTimein.value;
+};
+
+var onSelectTimeoutChange = function () {
+  selectTimein.value = selectTimeout.value;
+};
+
+selectTimein.addEventListener('change', onSelectTimeinChange);
+
+selectTimeout.addEventListener('change', onSelectTimeoutChange);
