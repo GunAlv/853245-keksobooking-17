@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 'use strict';
 
 var PINS_QUANTITY = 8;
@@ -7,9 +8,11 @@ var Y_MAX = 630;
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
 var MAIN_PIN_WIDTH = 65;
-var MAIN_PIN_HEIGHT = 65;
+var MAIN_PIN_HEIGHT = 75;
 var FORM_OFF = true;
 var FORM_ON = false;
+var MIN_LIMIT_Y = 130;
+var MAX_LIMIT_X = 630;
 var map = document.querySelector('.map');
 var mapPins = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -26,7 +29,7 @@ var removeClass = function (element, elementClass) {
 
 // Функции переключения состояния форм
 
-var changeAttributeDisabled = function (elements, isDisabled) { // ***Изменить функцию
+var changeAttributeDisabled = function (elements, isDisabled) {
   for (var i = 0; i < elements.length; i++) {
     elements[i].disabled = isDisabled;
   }
@@ -105,13 +108,14 @@ var getPinMainLocation = function (isActive) { // Получить коорди�
   var pinMainPositionY = pinMain.offsetTop;
   var result;
 
-  if (isActive) {
-    result = pinMainPositionX + ', ' + pinMainPositionY;
-  } else {
+  if (!isActive) {
     result = Math.floor(pinMainPositionX + (MAIN_PIN_WIDTH / 2)) + ', ' + (pinMainPositionY + MAIN_PIN_HEIGHT);
+  } else {
+    result = pinMainPositionX + ', ' + pinMainPositionY;
   }
 
   addressInput.value = result;
+  addressInput.placeholder = result;
 };
 
 getPinMainLocation(FORM_OFF);
@@ -124,20 +128,58 @@ var makePageActive = function () {
   addPinsToDOM(generatePins(PINS_QUANTITY));
   removeClass(map, 'map--faded');
   removeClass(adForm, 'ad-form--disabled');
-  pinMain.removeEventListener('click', onPinMainClick); // Удаляем обработчик для предотвращения добавления новых меток
 };
 
-var onPinMainClick = function () {
-  makePageActive();
-};
+pinMain.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
 
-pinMain.addEventListener('click', onPinMainClick);
+  if (map.classList.contains('map--faded')) {
+    makePageActive();
+  }
 
-var onPinMainMouseup = function () {
-  getPinMainLocation(FORM_ON); // Вставляем координаты острого угла главной метки при активации страницы
-};
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
 
-pinMain.addEventListener('mouseup', onPinMainMouseup);
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    getPinMainLocation(FORM_ON);
+
+    var currentCoorditaneY = pinMain.offsetTop - shift.y;
+    var currentCoordinateX = pinMain.offsetLeft - shift.x;
+
+    if ((currentCoorditaneY > MIN_LIMIT_Y) && (currentCoorditaneY < MAX_LIMIT_X)) {
+      pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
+    }
+
+    if ((currentCoordinateX > 0) && (currentCoordinateX < (map.offsetWidth - MAIN_PIN_WIDTH))) {
+      pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+    }
+  };
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+    getPinMainLocation(FORM_ON);
+
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+});
 
 
 // Функции валидации форм
@@ -151,6 +193,7 @@ var getMinPrice = function (selectedOption) { // Изменить минимал
     'palace': 10000
   };
   var keys = Object.keys(propertyPrices);
+
   for (var i = 0; i < keys.length; i++) {
     if (selectedOption === keys[i]) {
       price.min = propertyPrices[keys[i]];
@@ -159,7 +202,7 @@ var getMinPrice = function (selectedOption) { // Изменить минимал
 };
 
 selectType.addEventListener('change', function () {
-  var selectedOption = selectType[selectType.selectedIndex].value;
+  var selectedOption = selectType.value;
   getMinPrice(selectedOption);
 });
 
@@ -172,5 +215,4 @@ var onSelectTimeoutChange = function () {
 };
 
 selectTimein.addEventListener('change', onSelectTimeinChange);
-
 selectTimeout.addEventListener('change', onSelectTimeoutChange);
