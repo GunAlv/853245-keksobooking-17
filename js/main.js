@@ -57,7 +57,7 @@ var getRandomIndex = function (array) { // Получить случайный �
   return array[Math.floor(Math.random() * array.length)];
 };
 
-var generatePins = function (count) { // Создать массив объектов меток
+var generateData = function (count) { // Создать массив объектов меток
   var pins = [];
 
   for (var i = 0; i < count; i++) {
@@ -125,7 +125,7 @@ getPinMainLocation(FORM_OFF);
 
 var makePageActive = function () {
   changeDisablingForm(FORM_ON);
-  addPinsToDOM(generatePins(PINS_QUANTITY));
+  addPinsToDOM(generateData(PINS_QUANTITY));
   removeClass(map, 'map--faded');
   removeClass(adForm, 'ad-form--disabled');
 };
