@@ -14,18 +14,18 @@
     return pinElement;
   };
 
-  var createFragment = function (pins) { // Создать и заполнить фрагмент метками
+  var createFragment = function (pins, quantity) { // Создать и заполнить фрагмент метками
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < pins.length; i++) {
+    for (var i = 0; i < quantity; i++) {
       fragment.appendChild(renderPin(pins[i]));
     }
 
     return fragment;
   };
 
-  var addPinsToDOM = function (pins) { // Добавить в разметку метки
-    mapPins.appendChild(createFragment(pins));
+  var addPinsToDOM = function (pins, quantity) { // Добавить в разметку метки
+    mapPins.appendChild(createFragment(pins, quantity));
   };
 
   window.addPinsToDOM = addPinsToDOM;

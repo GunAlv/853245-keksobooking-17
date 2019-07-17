@@ -48,9 +48,17 @@
 
   // Функции активации страницы
 
-  var makePageActive = function () {
-    changeDisablingForm(FORM_ON);
-    window.addPinsToDOM(window.generateData(PINS_QUANTITY));
+  var successHandler = function (pins) { // Добавление меток в случае успешного получения данных от сервера
+    window.addPinsToDOM(pins, PINS_QUANTITY);
+  };
+
+  var errorHandler = function () { // Показать ошибку, если возникли проблемы с сервером
+    window.showErrorModal();
+  };
+
+  var makePageActive = function () { // Активация страницы
+    changeDisablingForm(FORM_ON); // Разблокировать формы
+    window.backend.load(successHandler, errorHandler); // Загрузить данные меток из сервера
     window.util.removeClass(map, 'map--faded');
     window.util.removeClass(adForm, 'ad-form--disabled');
   };
