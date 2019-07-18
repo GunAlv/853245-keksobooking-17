@@ -23,8 +23,14 @@
     document.removeEventListener('keydown', onErrorModalKeydown);
   };
 
+  var onErrorModalClick = function () {
+    closeError();
+    errorTemplate.removeEventListener('click', onErrorModalClick);
+  };
+
   window.showErrorModal = function () {
     openError();
+    errorTemplate.addEventListener('click', onErrorModalClick);
     document.addEventListener('keydown', onErrorModalKeydown);
     buttonError.addEventListener('click', onButtonError);
   };

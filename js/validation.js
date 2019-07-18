@@ -7,17 +7,17 @@
 
   var getMinPrice = function (selectedOption) { // Изменить минимальную цену в зависимости от выбранного типа жилья
     var price = document.querySelector('#price');
-    var propertyPrices = {
+    var PropertyPrices = {
       'bungalo': 0,
       'flat': 1000,
       'house': 5000,
       'palace': 10000
     };
-    var keys = Object.keys(propertyPrices);
+    var keys = Object.keys(PropertyPrices);
 
     for (var i = 0; i < keys.length; i++) {
       if (selectedOption === keys[i]) {
-        price.min = propertyPrices[keys[i]];
+        price.min = PropertyPrices[keys[i]];
       }
     }
   };
