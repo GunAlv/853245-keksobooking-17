@@ -3,6 +3,7 @@
 (function () {
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapPins = document.querySelector('.map__pins');
+  var PINS_QUANTITY = 8;
 
   var renderPin = function (pin) { // Отрисовать метку
     var pinElement = pinTemplate.cloneNode(true);
@@ -14,8 +15,9 @@
     return pinElement;
   };
 
-  var createFragment = function (pins, quantity) { // Создать и заполнить фрагмент метками
+  var createFragment = function (pins) { // Создать и заполнить фрагмент метками
     var fragment = document.createDocumentFragment();
+    var quantity = pins.length > PINS_QUANTITY ? PINS_QUANTITY : pins.length;
 
     for (var i = 0; i < quantity; i++) {
       fragment.appendChild(renderPin(pins[i]));
@@ -24,8 +26,8 @@
     return fragment;
   };
 
-  var addPinsToDOM = function (pins, quantity) { // Добавить в разметку метки
-    mapPins.appendChild(createFragment(pins, quantity));
+  var addPinsToDOM = function (pins) { // Добавить в разметку метки
+    mapPins.appendChild(createFragment(pins));
   };
 
   window.addPinsToDOM = addPinsToDOM;

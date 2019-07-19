@@ -3,7 +3,6 @@
 (function () {
   var FORM_ON = false;
   var FORM_OFF = true;
-  var PINS_QUANTITY = 8;
   var MAIN_PIN_WIDTH = 65;
   var MAIN_PIN_HEIGHT = 75;
   var MIN_LIMIT_Y = 130;
@@ -49,7 +48,7 @@
   // Функции активации страницы
 
   var onLoadSuccess = function (pins) { // Добавление меток в случае успешного получения данных от сервера
-    window.addPinsToDOM(pins, PINS_QUANTITY);
+    window.addPinsToDOM(pins);
   };
 
   var onLoadError = function () { // Показать ошибку, если возникли проблемы с сервером
