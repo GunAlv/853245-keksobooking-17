@@ -48,7 +48,7 @@
   // Функции активации страницы
 
   var onLoadSuccess = function (pins) { // Добавление меток в случае успешного получения данных от сервера
-    window.addPinsToDOM(pins);
+    window.pin.addPinsToDOM(pins);
   };
 
   var onLoadError = function () { // Показать ошибку, если возникли проблемы с сервером

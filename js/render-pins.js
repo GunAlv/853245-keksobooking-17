@@ -3,7 +3,7 @@
 (function () {
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapPins = document.querySelector('.map__pins');
-  var PINS_QUANTITY = 8;
+  var PINS_QUANTITY = 5;
 
   var renderPin = function (pin) { // Отрисовать метку
     var pinElement = pinTemplate.cloneNode(true);
@@ -30,5 +30,16 @@
     mapPins.appendChild(createFragment(pins));
   };
 
-  window.addPinsToDOM = addPinsToDOM;
+  var removePinsFromDOM = function () {
+    var mapPinsItems = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+
+    for (var i = 0; i < mapPinsItems.length; i++) {
+      mapPinsItems[i].remove();
+    }
+  };
+
+  window.pin = {
+    addPinsToDOM: addPinsToDOM,
+    removePinsFromDOM: removePinsFromDOM
+  };
 })();
