@@ -8,6 +8,10 @@
 
     var selectedOption = evt.target.value;
 
+    if (selectedOption === 'any') {
+      window.pin.addPinsToDOM(window.data);
+    }
+
     var filteredData = window.data.filter(function (it) {
       return it.offer.type === selectedOption;
     });

@@ -13,6 +13,7 @@
       'house': 5000,
       'palace': 10000
     };
+
     var keys = Object.keys(propertyPrice);
 
     for (var i = 0; i < keys.length; i++) {

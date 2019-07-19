@@ -10,7 +10,7 @@
       xhr.addEventListener('load', function () {
         if (xhr.status === 200) {
           window.data = xhr.response;
-          onLoad(window.data.slice());
+          onLoad(window.data);
         } else {
           onError();
         }
