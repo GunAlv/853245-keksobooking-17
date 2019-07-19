@@ -3,6 +3,7 @@
 (function () {
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapPins = document.querySelector('.map__pins');
+  var PINS_QUANTITY = 8;
 
   var renderPin = function (pin) { // Отрисовать метку
     var pinElement = pinTemplate.cloneNode(true);
@@ -16,8 +17,9 @@
 
   var createFragment = function (pins) { // Создать и заполнить фрагмент метками
     var fragment = document.createDocumentFragment();
+    var quantity = pins.length > PINS_QUANTITY ? PINS_QUANTITY : pins.length;
 
-    for (var i = 0; i < pins.length; i++) {
+    for (var i = 0; i < quantity; i++) {
       fragment.appendChild(renderPin(pins[i]));
     }
 
