@@ -31,13 +31,15 @@
     addressInput.placeholder = result;
   };
 
-  window.changeDisablingForm(FORM_OFF); // Заблокировать форму
+  window.changeDisablingForm(FORM_OFF);
   getPinMainLocation(FORM_OFF); // Получить координаты главной метки без учета ее острого конца
 
   // Функции активации страницы
 
   var onLoadSuccess = function (pins) { // Добавление меток в случае успешного получения данных от сервера
-    window.pin.addPinsToDOM(pins);
+    window.data = pins;
+    window.pin.addPinsToDOM(window.data);
+    window.card.addCardsToDOM(window.data);
   };
 
   var onLoadError = function () { // Показать ошибку, если возникли проблемы с сервером
