@@ -59,6 +59,13 @@
     this.y = y;
   };
 
+  var onPinMainKeydown = function (evt) {
+    window.util.isEnterEvent(evt, makePageActive);
+    pinMain.removeEventListener('keydown', onPinMainKeydown);
+  };
+
+  pinMain.addEventListener('keydown', onPinMainKeydown);
+
   pinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
