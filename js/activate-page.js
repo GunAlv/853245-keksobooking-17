@@ -36,7 +36,7 @@
 
   // Функции активации страницы
 
-  var onLoadSuccess = function (pins) { // Добавление меток в случае успешного получения данных от сервера
+  var onLoadSuccess = function (pins) { // Добавление меток и карточек объявлений в случае успешного получения данных от сервера
     window.data = pins;
     window.pin.addPinsToDOM(window.data);
     window.card.addCardsToDOM(window.data);
@@ -44,6 +44,7 @@
 
   var onLoadError = function () { // Показать ошибку, если возникли проблемы с сервером
     window.showErrorModal();
+    window.changeDisablingForm(FORM_OFF);
   };
 
   var makePageActive = function () { // Активация страницы
@@ -53,6 +54,11 @@
     window.util.removeClass(adForm, 'ad-form--disabled');
   };
 
+  var CurrentCoords = function (x, y) {
+    this.x = x;
+    this.y = y;
+  };
+
   pinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
@@ -60,23 +66,14 @@
       makePageActive();
     }
 
-    var startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
+    var startCoords = new CurrentCoords(evt.clientX, evt.clientY);
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
 
-      var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
-      };
+      var shift = new CurrentCoords(startCoords.x - moveEvt.clientX, startCoords.y - moveEvt.clientY);
 
-      startCoords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
-      };
+      startCoords = new CurrentCoords(moveEvt.clientX, moveEvt.clientY);
 
       getPinMainLocation(FORM_ON);
 
