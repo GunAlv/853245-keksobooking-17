@@ -2,7 +2,7 @@
 
 (function () {
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-  var mapPins = document.querySelector('.map__pins');
+  var mapPinsBlock = document.querySelector('.map__pins');
   var PIN_WIDTH_HALF = 50 / 2;
   var PIN_HEIGHT = 70;
 
@@ -16,8 +16,11 @@
     return pinElement;
   };
 
-  var addPinsToDOM = function (pins) { // Добавить в разметку метки
-    mapPins.appendChild(window.create.fragment(pins, renderPin));
+  var addPinsToDOM = function (pins, callback) { // Добавить в разметку метки
+    mapPinsBlock.appendChild(window.create.fragment(pins, renderPin));
+    var mapPins = mapPinsBlock.querySelectorAll('.map__pin');
+
+    callback(mapPins);
   };
 
   var removePinsFromDOM = function () {

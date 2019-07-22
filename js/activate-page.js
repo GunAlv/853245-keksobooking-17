@@ -55,7 +55,7 @@
 
   var onLoadSuccess = function (data) { // Добавление необходимых данных в случае успешного обращения на сервер
     copiedData = data.slice();
-    window.pin.addPinsToDOM(copiedData); // Добавление меток
+    window.pin.addPinsToDOM(copiedData, window.showCard); // Добавление меток
     window.card.addCardsToDOM(copiedData); // Добавление объявлений
     window.filter.filtrationMap(copiedData); // Фильтрация меток на карте
   };
