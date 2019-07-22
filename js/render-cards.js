@@ -77,22 +77,14 @@
     cardElement.querySelector('.popup__description').textContent = card.offer.description;
     addCardPhoto(cardElement.querySelector('.popup__photos'), card.offer.photos);
 
+    cardElement.style.display = 'none';
+
     return cardElement;
-  };
-
-  var createFragment = function (cards) {
-    var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < 1; i++) {
-      fragment.appendChild(renderCard(cards[i]));
-    }
-
-    return fragment;
   };
 
   var addCardsToDOM = function (cards) {
     var mapBlock = document.querySelector('.map');
-    mapBlock.insertBefore(createFragment(cards), filterContainer);
+    mapBlock.insertBefore(window.create.fragment(cards, renderCard), filterContainer);
   };
 
   window.card = {

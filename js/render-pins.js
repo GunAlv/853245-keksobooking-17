@@ -5,7 +5,6 @@
   var mapPins = document.querySelector('.map__pins');
   var PIN_WIDTH_HALF = 50 / 2;
   var PIN_HEIGHT = 70;
-  var PINS_QUANTITY = 5;
 
   var renderPin = function (pin) { // Отрисовать метку
     var pinElement = pinTemplate.cloneNode(true);
@@ -17,19 +16,8 @@
     return pinElement;
   };
 
-  var createFragment = function (pins) { // Создать и заполнить фрагмент метками
-    var fragment = document.createDocumentFragment();
-    var quantity = pins.length > PINS_QUANTITY ? PINS_QUANTITY : pins.length;
-
-    for (var i = 0; i < quantity; i++) {
-      fragment.appendChild(renderPin(pins[i]));
-    }
-
-    return fragment;
-  };
-
   var addPinsToDOM = function (pins) { // Добавить в разметку метки
-    mapPins.appendChild(createFragment(pins));
+    mapPins.appendChild(window.create.fragment(pins, renderPin));
   };
 
   var removePinsFromDOM = function () {
