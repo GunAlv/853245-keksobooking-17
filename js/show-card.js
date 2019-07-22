@@ -1,23 +1,27 @@
 'use strict';
 
 (function () {
-  var showCard = function (mapPins) {
-    mapPins.forEach(function (mapPin) {
+  var mapBlock = document.querySelector('.map');
+  var filterContainer = document.querySelector('.map__filters-container');
+
+  var removeCard = function () {
+    var card = mapBlock.querySelector('.map__card');
+    if (card) {
+      card.remove();
+    }
+  };
+
+  var showCard = function (pins, mapPins) {
+    mapPins.forEach(function (mapPin, index) {
       mapPin.addEventListener('click', function () {
-        var cards;
-        if (!cards) {
-          cards = document.querySelectorAll('article.map__card');
-        }
 
-        for (var i = 0; i < cards.length; i++) {
-          cards[i].style.display = 'none';
+        removeCard();
 
-          if (mapPin.children[0].src === cards[i].children[0].src) {
-            cards[i].style.display = 'block';
-          }
-        }
+        var createdFragment = window.createFragmentForCard(pins[index - 1]);
+        mapBlock.insertBefore(createdFragment, filterContainer);
       });
     });
   };
+
   window.showCard = showCard;
 })();

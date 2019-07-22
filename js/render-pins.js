@@ -20,7 +20,7 @@
     mapPinsBlock.appendChild(window.create.fragment(pins, renderPin));
     var mapPins = mapPinsBlock.querySelectorAll('.map__pin');
 
-    callback(mapPins);
+    callback(pins, mapPins);
   };
 
   var removePinsFromDOM = function () {

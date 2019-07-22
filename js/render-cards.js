@@ -2,7 +2,6 @@
 
 (function () {
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
-  var filterContainer = document.querySelector('.map__filters-container');
   var ImageSize = {
     WIDTH: 45,
     HEIGHT: 40
@@ -77,17 +76,15 @@
     cardElement.querySelector('.popup__description').textContent = card.offer.description;
     addCardPhoto(cardElement.querySelector('.popup__photos'), card.offer.photos);
 
-    cardElement.style.display = 'none';
-
     return cardElement;
   };
 
-  var addCardsToDOM = function (cards) {
-    var mapBlock = document.querySelector('.map');
-    mapBlock.insertBefore(window.create.fragment(cards, renderCard), filterContainer);
+  var createFragmentForCard = function (element) {
+    var fragment = document.createDocumentFragment();
+    fragment.appendChild(renderCard(element));
+
+    return fragment;
   };
 
-  window.card = {
-    addCardsToDOM: addCardsToDOM
-  };
+  window.createFragmentForCard = createFragmentForCard;
 })();
