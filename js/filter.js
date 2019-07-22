@@ -3,17 +3,27 @@
 (function () {
   var selectHousingType = document.querySelector('#housing-type');
 
-  selectHousingType.addEventListener('change', function () {
+  var getFilteredHousingTypePins = function (data) {
     window.pin.removePinsFromDOM();
 
-    var filteredData = window.data.filter(function (it) {
+    var filteredData = data.filter(function (it) {
       return it.offer.type === selectHousingType.value;
     });
 
     if (selectHousingType.value === 'any') {
-      window.pin.addPinsToDOM(window.data);
+      window.pin.addPinsToDOM(data);
     } else {
       window.pin.addPinsToDOM(filteredData);
     }
-  });
+  };
+
+  var filtrationMap = function (data) {
+    selectHousingType.addEventListener('change', function () {
+      getFilteredHousingTypePins(data);
+    });
+  };
+
+  window.filter = {
+    filtrationMap: filtrationMap
+  };
 })();

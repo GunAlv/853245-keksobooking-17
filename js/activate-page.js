@@ -14,6 +14,17 @@
   var map = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
   var pinMain = document.querySelector('.map__pin--main');
+  var copiedData = [];
+
+  var limitMoving = function (x, y, shiftX, shiftY) { // Ограничить передвижение главной метки
+    if ((y > Limit.Y) && (y < Limit.X)) {
+      pinMain.style.top = (pinMain.offsetTop - shiftY) + 'px';
+    }
+
+    if ((x > 0) && (x < (map.offsetWidth - MainPin.WIDTH))) {
+      pinMain.style.left = (pinMain.offsetLeft - shiftX) + 'px';
+    }
+  };
 
   var getPinMainLocation = function (isActive) { // Получить координаты главной метки
     var addressInput = document.querySelector('#address');
@@ -31,15 +42,22 @@
     addressInput.placeholder = result;
   };
 
+  var setPinMainLocationWithoutAngle = function () {
+    getPinMainLocation(FORM_OFF);
+  };
+
+  var setPinMainLocationWithAngle = function () {
+    getPinMainLocation(FORM_ON);
+  };
+
   window.changeDisablingForm(FORM_OFF);
-  getPinMainLocation(FORM_OFF); // Получить координаты главной метки без учета ее острого конца
+  setPinMainLocationWithoutAngle(); // Получить координаты главной метки без учета ее острого конца
 
-  // Функции активации страницы
-
-  var onLoadSuccess = function (pins) { // Добавление меток и карточек объявлений в случае успешного получения данных от сервера
-    window.data = pins;
-    window.pin.addPinsToDOM(window.data);
-    window.card.addCardsToDOM(window.data);
+  var onLoadSuccess = function (data) { // Добавление необходимых данных в случае успешного обращения на сервер
+    copiedData = data.slice();
+    window.pin.addPinsToDOM(copiedData); // Добавление меток
+    window.card.addCardsToDOM(copiedData); // Добавление объявлений
+    window.filter.filtrationMap(copiedData); // Фильтрация меток на карте
   };
 
   var onLoadError = function () { // Показать ошибку, если возникли проблемы с сервером
@@ -54,57 +72,10 @@
     window.util.removeClass(adForm, 'ad-form--disabled');
   };
 
-  var CurrentCoords = function (x, y) {
-    this.x = x;
-    this.y = y;
+  window.activate = {
+    makePageActive: makePageActive,
+    limitMoving: limitMoving,
+    setPinMainLocationWithoutAngle: setPinMainLocationWithoutAngle,
+    setPinMainLocationWithAngle: setPinMainLocationWithAngle
   };
-
-  var onPinMainKeydown = function (evt) {
-    window.util.isEnterEvent(evt, makePageActive);
-    pinMain.removeEventListener('keydown', onPinMainKeydown);
-  };
-
-  pinMain.addEventListener('keydown', onPinMainKeydown);
-
-  pinMain.addEventListener('mousedown', function (evt) {
-    evt.preventDefault();
-
-    if (map.classList.contains('map--faded')) {
-      makePageActive();
-    }
-
-    var startCoords = new CurrentCoords(evt.clientX, evt.clientY);
-
-    var onMouseMove = function (moveEvt) {
-      moveEvt.preventDefault();
-
-      var shift = new CurrentCoords(startCoords.x - moveEvt.clientX, startCoords.y - moveEvt.clientY);
-
-      startCoords = new CurrentCoords(moveEvt.clientX, moveEvt.clientY);
-
-      getPinMainLocation(FORM_ON);
-
-      var currentCoorditaneY = pinMain.offsetTop - shift.y;
-      var currentCoordinateX = pinMain.offsetLeft - shift.x;
-
-      if ((currentCoorditaneY > Limit.Y) && (currentCoorditaneY < Limit.X)) {
-        pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
-      }
-
-      if ((currentCoordinateX > 0) && (currentCoordinateX < (map.offsetWidth - MainPin.WIDTH))) {
-        pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
-      }
-    };
-
-    var onMouseUp = function (upEvt) {
-      upEvt.preventDefault();
-      getPinMainLocation(FORM_ON);
-
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-    };
-
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-  });
 })();
