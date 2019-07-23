@@ -1,10 +1,9 @@
 'use strict';
 
 (function () {
-  var map = document.querySelector('.map');
   var pinMain = document.querySelector('.map__pin--main');
 
-  var CurrentCoords = function (x, y) {
+  var CurrentCoordinates = function (x, y) {
     this.x = x;
     this.y = y;
   };
@@ -19,25 +18,23 @@
   pinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
-    if (map.classList.contains('map--faded')) {
-      window.activate.makePageActive();
-    }
+    window.activate.checkMapClass();
 
-    var startCoords = new CurrentCoords(evt.clientX, evt.clientY);
+    var startCoords = new CurrentCoordinates(evt.clientX, evt.clientY);
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
 
-      var shift = new CurrentCoords(startCoords.x - moveEvt.clientX, startCoords.y - moveEvt.clientY);
+      var shift = new CurrentCoordinates(startCoords.x - moveEvt.clientX, startCoords.y - moveEvt.clientY);
 
-      startCoords = new CurrentCoords(moveEvt.clientX, moveEvt.clientY);
+      startCoords = new CurrentCoordinates(moveEvt.clientX, moveEvt.clientY);
 
       window.activate.setPinMainLocationWithAngle();
 
       var currentCoorditaneY = pinMain.offsetTop - shift.y;
       var currentCoordinateX = pinMain.offsetLeft - shift.x;
 
-      window.activate.limitMoving(currentCoordinateX, currentCoorditaneY, shift.x, shift.y);
+      window.pinMain.limitMoving(currentCoordinateX, currentCoorditaneY, shift.x, shift.y);
     };
 
     var onMouseUp = function (upEvt) {

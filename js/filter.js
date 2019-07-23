@@ -11,9 +11,9 @@
     });
 
     if (selectHousingType.value === 'any') {
-      window.pin.addPinsToDOM(data);
+      window.pin.addPinsToDOM(data, window.showCard);
     } else {
-      window.pin.addPinsToDOM(filteredData);
+      window.pin.addPinsToDOM(filteredData, window.showCard);
     }
   };
 
