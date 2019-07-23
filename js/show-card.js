@@ -27,13 +27,19 @@
       btn.removeEventListener('click', onBtnCloseClick);
     };
 
-    var onBtnCloseKedown = function (evt) {
+    var onBtnCloseKeydownEnter = function (evt) {
       window.util.isEnterEvent(evt, removeCard);
-      btn.removeEventListener('kedown', onBtnCloseKedown);
+      btn.removeEventListener('keydown', onBtnCloseKeydownEnter);
+    };
+
+    var onDocumentCloseKeydownEsc = function (evt) {
+      window.util.isEscEvent(evt, removeCard);
+      document.removeEventListener('keydown', onDocumentCloseKeydownEsc);
     };
 
     btn.addEventListener('click', onBtnCloseClick);
-    btn.addEventListener('kedown', onBtnCloseKedown);
+    btn.addEventListener('keydown', onBtnCloseKeydownEnter);
+    document.addEventListener('keydown', onDocumentCloseKeydownEsc);
   };
 
   var showCard = function (pins, mapPins) {
