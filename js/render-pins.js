@@ -3,7 +3,7 @@
 (function () {
   var PIN_WIDTH_HALF = 50 / 2;
   var PIN_HEIGHT = 70;
-  var PINS_QUANTITY = 5;
+  var PINS_QUANTITY = 9;
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapPinsBlock = document.querySelector('.map__pins');
 
@@ -35,7 +35,7 @@
     callback(pins, mapPins);
   };
 
-  var deactivatePin = function () {
+  var checkIfPinIsActive = function () {
     var activedPin = mapPinsBlock.querySelector('.map__pin--active');
 
     if (activedPin) {
@@ -45,7 +45,6 @@
 
   window.pin = {
     addPinsToDOM: addPinsToDOM,
-    deactivatePin: deactivatePin
-    // removePinsFromDOM: removePinsFromDOM
+    checkIfPinIsActive: checkIfPinIsActive
   };
 })();

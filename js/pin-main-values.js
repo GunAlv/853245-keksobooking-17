@@ -41,5 +41,5 @@
   window.pinMain = {
     getLocation: getPinMainLocation,
     limitMoving: limitMoving
-  }
+  };
 })();

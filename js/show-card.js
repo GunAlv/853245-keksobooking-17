@@ -45,7 +45,7 @@
   var showCard = function (pins, mapPins) {
     mapPins.forEach(function (mapPin, index) {
       mapPin.addEventListener('click', function () {
-        window.pin.deactivatePin();
+        window.pin.checkIfPinIsActive();
 
         mapPin.classList.add('map__pin--active');
 
