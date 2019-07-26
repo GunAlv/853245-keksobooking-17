@@ -20,12 +20,12 @@
 
   var onLoadSuccess = function (data) { // Добавление необходимых данных в случае успешного обращения на сервер
     copiedData = data.slice();
-    window.pin.addPinsToDOM(copiedData, window.showCard); // Добавление меток
+    window.pin.addPinsToDOM(copiedData, window.card.show); // Добавление меток
     window.mapShowFilteredPins(copiedData); // Фильтрация меток на карте
   };
 
   var onLoadError = function () { // Показать ошибку, если возникли проблемы с сервером
-    window.showErrorModal();
+    window.popup.showErrorModal();
     window.changeDisablingForm(FORM_OFF);
   };
 

@@ -55,5 +55,8 @@
     });
   };
 
-  window.showCard = showCard;
+  window.card = {
+    show: showCard,
+    remove: removeCard
+  };
 })();
