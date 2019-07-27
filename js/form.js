@@ -1,8 +1,10 @@
 'use strict';
 
 (function () {
+  var mapBlock = document.querySelector('.map');
   var mapFillter = document.querySelector('.map__filters');
   var adForm = document.querySelector('.ad-form');
+  var buttonReset = document.querySelector('.ad-form__reset');
   var selectType = document.querySelector('#type');
   var selectTimein = document.querySelector('#timein');
   var selectTimeout = document.querySelector('#timeout');
@@ -64,20 +66,31 @@
   selectTimeout.addEventListener('change', onSelectTimeoutChange);
 
   var resetPage = function () {
-    adForm.reset();
     mapFillter.reset();
+    adForm.reset();
     window.card.remove();
+    window.pinMain.returnToStart();
+    window.pin.clearPins();
+    mapBlock.classList.add('map--faded');
+    adForm.classList.add('ad-form--disabled');
   };
 
   var onSaveSuccess = function () {
     resetPage();
-    adForm.classList.add('ad-form--disabled');
     window.popup.showSuccessModal();
   };
 
   var onSaveError = function () {
     window.popup.showErrorModal();
   };
+
+  var onButtonReset = function (evt) {
+    evt.preventDefault();
+    resetPage();
+    buttonReset.removeEventListener('click', onButtonReset);
+  };
+
+  buttonReset.addEventListener('click', onButtonReset);
 
   adForm.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(adForm), onSaveSuccess, onSaveError);

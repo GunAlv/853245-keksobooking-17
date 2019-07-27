@@ -20,27 +20,25 @@
     }
   };
 
-  var filterStringValue = function (selectValue, dataValue) {
-    return selectValue === 'any' || parseInt(selectValue, 10) === dataValue;
+  var filterStringValue = function (selectValue, pinOffer) {
+    return selectValue === 'any' || parseInt(selectValue, 10) === pinOffer;
   };
 
-  var filterValue = function (selectValue, dataValue) {
-    return selectValue === 'any' || selectValue === dataValue;
+  var filterValue = function (selectValue, pinOffer) {
+    return selectValue === 'any' || selectValue === pinOffer;
   };
 
-  var filterPrice = function (selectValue, dataValue) {
-    return selectValue === 'any' || selectValue === getPriceToString(dataValue); // Преобразует цену из data в строковое выражение для сопоставление с input value
+  var filterPrice = function (selectValue, pinOffer) {
+    return selectValue === 'any' || selectValue === getPriceToString(pinOffer); // Преобразует цену из data в строковое выражение для сопоставление с input value
   };
 
-  var checkFeaturesMatch = function (dataValue, inputValue) { // Возвращает булево значение, если один массив включает в себе элемент другого массива
+  var checkFeaturesMatch = function (pinOffer, inputValue) { // Возвращает булево значение, если один массив включает в себе элемент другого массива
     return inputValue.every(function (everyInputValue) {
-      return dataValue.indexOf(everyInputValue) >= 0;
+      return pinOffer.indexOf(everyInputValue) >= 0;
     });
   };
 
-  var filtraion = function (pins) { // В конечном итоге функция будет возращать набот отфильрованных меток
-    var filteredPins = pins;
-
+  var filtraion = function (pins) { // В конечном итоге функция будет возращать набор отфильрованных меток
     var checkboxCheckedFeatures = document.querySelectorAll('#housing-features input[type="checkbox"]:checked');
     var featureValuesFromInputs = []; // Динамически меняющийся массив, добавляющий value выбранного checbox
 
@@ -52,12 +50,13 @@
 
     getFeatureValues();
 
-    return filteredPins.filter(function (filteredPin) { // Фильтрация меток в соответствии заданным условиям
-      return filterStringValue(selectHousingRooms.value, filteredPin.offer.rooms) &&
-      filterStringValue(selectHousingGuests.value, filteredPin.offer.guests) &&
-      filterValue(selectHousingType.value, filteredPin.offer.type) &&
-      filterPrice(selectHousingPrice.value, filteredPin.offer.price) &&
-      checkFeaturesMatch(filteredPin.offer.features, featureValuesFromInputs);
+    return pins.filter(function (pin) { // Фильтрация меток в соответствии заданным условиям
+
+      return filterStringValue(selectHousingRooms.value, pin.offer.rooms) &&
+      filterStringValue(selectHousingGuests.value, pin.offer.guests) &&
+      filterValue(selectHousingType.value, pin.offer.type) &&
+      filterPrice(selectHousingPrice.value, pin.offer.price) &&
+      checkFeaturesMatch(pin.offer.features, featureValuesFromInputs);
     });
   };
 

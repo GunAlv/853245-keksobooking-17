@@ -20,14 +20,14 @@
 
     window.activate.checkMapClass();
 
-    var startCoords = new CurrentCoordinates(evt.clientX, evt.clientY);
+    var startCoordinates = new CurrentCoordinates(evt.clientX, evt.clientY);
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
 
-      var shift = new CurrentCoordinates(startCoords.x - moveEvt.clientX, startCoords.y - moveEvt.clientY);
+      var shift = new CurrentCoordinates(startCoordinates.x - moveEvt.clientX, startCoordinates.y - moveEvt.clientY);
 
-      startCoords = new CurrentCoordinates(moveEvt.clientX, moveEvt.clientY);
+      startCoordinates = new CurrentCoordinates(moveEvt.clientX, moveEvt.clientY);
 
       window.activate.setPinMainLocationWithAngle();
 

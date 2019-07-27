@@ -30,6 +30,7 @@
 
   var addPinsToDOM = function (pins, callback) { // Добавить в разметку метки
     mapPinsBlock.appendChild(createFragment(pins));
+
     var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
 
     callback(pins, mapPins);
@@ -43,8 +44,15 @@
     }
   };
 
+  var clearPins = function () {
+    while (mapPinsBlock.children.length > 2) {
+      mapPinsBlock.removeChild(mapPinsBlock.lastChild);
+    }
+  };
+
   window.pin = {
     addPinsToDOM: addPinsToDOM,
-    checkIfPinIsActive: checkIfPinIsActive
+    checkIfPinIsActive: checkIfPinIsActive,
+    clearPins: clearPins
   };
 })();

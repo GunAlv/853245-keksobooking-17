@@ -1,15 +1,11 @@
 'use strict';
 
 (function () {
-  var mapFillter = document.querySelector('.map__filters');
   var DEBOUNCE_INTERVAL = 500;
+  var mapFillter = document.querySelector('.map__filters');
 
   var renderFilteredPins = function (pins) {
-    var pinItems = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-    pinItems.forEach(function (item) {
-      item.remove();
-    });
-
+    window.pin.clearPins();
     window.pin.addPinsToDOM(window.filtration(pins), window.card.show);
   };
 

@@ -21,15 +21,15 @@
     callback(buttonCloseCard);
   };
 
-  var closeCard = function (btn) {
+  var closeCard = function (buttonClose) {
     var onBtnCloseClick = function () {
       removeCard();
-      btn.removeEventListener('click', onBtnCloseClick);
+      buttonClose.removeEventListener('click', onBtnCloseClick);
     };
 
     var onBtnCloseKeydownEnter = function (evt) {
       window.util.isEnterEvent(evt, removeCard);
-      btn.removeEventListener('keydown', onBtnCloseKeydownEnter);
+      buttonClose.removeEventListener('keydown', onBtnCloseKeydownEnter);
     };
 
     var onDocumentCloseKeydownEsc = function (evt) {
@@ -37,8 +37,8 @@
       document.removeEventListener('keydown', onDocumentCloseKeydownEsc);
     };
 
-    btn.addEventListener('click', onBtnCloseClick);
-    btn.addEventListener('keydown', onBtnCloseKeydownEnter);
+    buttonClose.addEventListener('click', onBtnCloseClick);
+    buttonClose.addEventListener('keydown', onBtnCloseKeydownEnter);
     document.addEventListener('keydown', onDocumentCloseKeydownEsc);
   };
 
