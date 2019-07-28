@@ -6,6 +6,7 @@
   var mapBlock = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
   var copiedData = [];
+  var mapFillter = document.querySelector('.map__filters');
 
   var setPinMainLocationWithoutAngle = function () {
     window.pinMain.getLocation(FORM_OFF);
@@ -42,10 +43,22 @@
     }
   };
 
+  var resetPage = function () {
+    adForm.reset();
+    mapFillter.reset();
+    window.changeDisablingForm(FORM_OFF);
+    window.pinMain.returnToStart();
+    window.pin.clearPins();
+    window.card.remove();
+    adForm.classList.add('ad-form--disabled');
+    mapBlock.classList.add('map--faded');
+  };
+
   window.activate = {
     makePageActive: makePageActive,
     checkMapClass: checkMapClass,
     setPinMainLocationWithoutAngle: setPinMainLocationWithoutAngle,
-    setPinMainLocationWithAngle: setPinMainLocationWithAngle
+    setPinMainLocationWithAngle: setPinMainLocationWithAngle,
+    resetPage: resetPage
   };
 })();
