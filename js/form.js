@@ -73,16 +73,20 @@
     window.popup.showErrorModal();
   };
 
-  var onButtonReset = function (evt) {
-    evt.preventDefault();
-    window.activate.resetPage();
-    buttonReset.removeEventListener('click', onButtonReset);
-  };
-
-  buttonReset.addEventListener('click', onButtonReset);
-
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
     window.backend.save(onSaveSuccess, onSaveError, new FormData(adForm));
   });
+
+  var formButtonReset = function () {
+    var onButtonReset = function (evt) {
+      evt.preventDefault();
+      window.activate.resetPage();
+      buttonReset.removeEventListener('click', onButtonReset);
+    };
+
+    buttonReset.addEventListener('click', onButtonReset);
+  };
+
+  window.formButtonReset = formButtonReset;
 })();

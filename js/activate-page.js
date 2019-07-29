@@ -35,6 +35,7 @@
     window.backend.load(onLoadSuccess, onLoadError); // Загрузить данные меток из сервера
     window.util.removeClass(mapBlock, 'map--faded');
     window.util.removeClass(adForm, 'ad-form--disabled');
+    window.formButtonReset();
   };
 
   var checkMapClass = function () {
