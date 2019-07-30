@@ -1,21 +1,23 @@
 'use strict';
 
 (function () {
+  var PIN_WIDTH_HALF = 50 / 2;
+  var PIN_HEIGHT = 70;
+  var PINS_QUANTITY = 5;
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-  var mapPins = document.querySelector('.map__pins');
-  var PINS_QUANTITY = 8;
+  var mapPinsBlock = document.querySelector('.map__pins');
 
   var renderPin = function (pin) { // Отрисовать метку
     var pinElement = pinTemplate.cloneNode(true);
-    pinElement.style.left = pin.location.x + 'px';
-    pinElement.style.top = pin.location.y + 'px';
+    pinElement.style.left = (pin.location.x - PIN_WIDTH_HALF) + 'px';
+    pinElement.style.top = (pin.location.y - PIN_HEIGHT) + 'px';
     pinElement.querySelector('img').src = pin.author.avatar;
     pinElement.querySelector('img').alt = pin.offer.type;
 
     return pinElement;
   };
 
-  var createFragment = function (pins) { // Создать и заполнить фрагмент метками
+  var createFragment = function (pins) {
     var fragment = document.createDocumentFragment();
     var quantity = pins.length > PINS_QUANTITY ? PINS_QUANTITY : pins.length;
 
@@ -26,9 +28,31 @@
     return fragment;
   };
 
-  var addPinsToDOM = function (pins) { // Добавить в разметку метки
-    mapPins.appendChild(createFragment(pins));
+  var addPinsToDOM = function (pins, callback) { // Добавить в разметку метки
+    mapPinsBlock.appendChild(createFragment(pins));
+
+    var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+
+    callback(pins, mapPins);
   };
 
-  window.addPinsToDOM = addPinsToDOM;
+  var checkIfPinIsActive = function () {
+    var activedPin = mapPinsBlock.querySelector('.map__pin--active');
+
+    if (activedPin) {
+      activedPin.classList.remove('map__pin--active');
+    }
+  };
+
+  var clearPins = function () {
+    while (mapPinsBlock.children.length > 2) {
+      mapPinsBlock.removeChild(mapPinsBlock.lastChild);
+    }
+  };
+
+  window.pin = {
+    addPinsToDOM: addPinsToDOM,
+    checkIfPinIsActive: checkIfPinIsActive,
+    clearPins: clearPins
+  };
 })();
