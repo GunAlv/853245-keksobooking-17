@@ -2,7 +2,7 @@
 
 (function () {
   var DEBOUNCE_INTERVAL = 500;
-  var mapFillter = document.querySelector('.map__filters');
+  var mapFilter = document.querySelector('.map__filters');
 
   var renderFilteredPins = function (pins) {
     window.pin.clearPins();
@@ -21,7 +21,7 @@
       }, DEBOUNCE_INTERVAL);
     };
 
-    mapFillter.addEventListener('change', onMapFilterChange);
+    mapFilter.addEventListener('change', onMapFilterChange);
   };
 
   window.mapShowFilteredPins = mapShowFilteredPins;

@@ -58,7 +58,6 @@
   window.activate = {
     makePageActive: makePageActive,
     checkMapClass: checkMapClass,
-    setPinMainLocationWithoutAngle: setPinMainLocationWithoutAngle,
     setPinMainLocationWithAngle: setPinMainLocationWithAngle,
     resetPage: resetPage
   };
