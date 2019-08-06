@@ -45,6 +45,7 @@
   };
 
   var resetPage = function () {
+    window.resetImgPreview();
     adForm.reset();
     mapFillter.reset();
     window.changeDisablingForm(FORM_OFF);
