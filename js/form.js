@@ -9,6 +9,7 @@
   var selectRomms = document.querySelector('#room_number');
   var selectCapacity = document.querySelector('#capacity');
 
+
   var PropertyPrice = {
     'BUNGALO': 0,
     'FLAT': 1000,
